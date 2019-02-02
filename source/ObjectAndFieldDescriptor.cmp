@@ -1,0 +1,66 @@
+<aura:component controller="ObjectAndFieldDescriptorController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init"
+                  value="{!this}"
+                  action="{!c.onInit}"/>
+    
+    <aura:attribute name="selectedObject"
+                    type="String"
+                    default=""/>
+    
+    <aura:attribute name="wrapperObjectFields"
+                    type="List"
+                    default=""/>
+    
+    <aura:attribute name="lstObjectName"
+                    type="List"
+                    default=""/>
+    
+    <aura:attribute name="columns"
+                    type="List"/>
+    
+    <aura:attribute name="showFields"
+                    type="Boolean"
+                    default="false"/>
+    
+    <aura:attribute name="showSpinner"
+                    type="Boolean"
+                    default="false"/>
+    
+    <lightning:card> 
+        <aura:set attribute="title">
+            <lightning:icon iconName="standard:sobject" size="small"/>
+            Object and Field Descriptor
+        </aura:set>
+        <aura:set attribute="footer">
+            
+        </aura:set>
+        <aura:if isTrue="{!v.showSpinner}">
+        	<lightning:spinner/>
+        </aura:if>
+        <lightning:select label="Select a Object"
+                          value="{!v.selectedObject}"
+                          onchange="{!c.onObjectSelection}">
+            <option text="--None--"/>
+            <aura:iteration items="{!v.lstObjectName}"
+                            var="nameObj">
+                <option value= "{!nameObj.objectAPIName}" text="{!nameObj.objectLabel}"/>
+            </aura:iteration>
+        </lightning:select>
+        <aura:if isTrue="{!v.showFields}">
+            <br/>
+        	<br/>
+                <lightning:icon iconName="utility:description" size="small"/>
+            	Available Fields:
+            <div style="height: 400px">
+            <lightning:datatable
+                                 keyField="id"
+                                 data="{! v.wrapperObjectFields}"
+                                 columns="{! v.columns }"
+                                 hideCheckboxColumn="true"/>
+            </div>
+        </aura:if>
+        
+    </lightning:card>
+</aura:component>
